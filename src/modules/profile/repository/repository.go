@@ -22,5 +22,5 @@ type ProfileRepository interface {
 	FindByID(string) (*model.Profile, error)
 
 	// akan mereturn data bertipe profile dan error
-	FindAll() (model.Profile, error)
+	FindAll() (model.Profiles, error)
 }
