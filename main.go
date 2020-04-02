@@ -18,23 +18,36 @@ func main() {
 	}
 
 	wury := model.NewProfile()
-	wury.ID = "P1"
-	wury.FirstName = "Reyhan"
-	wury.LastName = "Dwiputra "
-	wury.Email = "reyhanjovie01@gmail.com"
+	wury.ID = "P2"
+	wury.FirstName = "Jojo"
+	wury.LastName = "Sinta"
+	wury.Email = "jojo@gmail.com"
 	wury.Password = "123456"
 
-	fmt.Println(wury)
+	// fmt.Println(wury)
 
 	profileRepositoryPostgres := repository.NewProfileRepositoryPostgres(db)
 	// untuk save data
-	err = saveProfile(wury, profileRepositoryPostgres)
+	// err = saveProfile(wury, profileRepositoryPostgres)
 
 	// untuk update data
 	// err = updateProfile(wury, profileRepositoryPostgres)
 
 	// untuk delete data
 	// err = deleteProfile(wury, profileRepositoryPostgres)
+
+	// untuk get data by id
+	// profile, err := getByID("P2", profileRepositoryPostgres)
+	// fmt.Println("========================================")
+	// fmt.Println(profile)
+
+	// untuk get all data
+	profiles, err := getAll(profileRepositoryPostgres)
+
+	for _, val := range profiles {
+		fmt.Println(val)
+	}
+
 }
 
 // ini untuk save data
@@ -70,4 +83,25 @@ func deleteProfile(p *model.Profile, repo repository.ProfileRepository) error {
 	fmt.Println("Delete Success !")
 
 	return nil
+}
+
+// ini untuk get data by id
+func getByID(id string, repo repository.ProfileRepository) (*model.Profile, error) {
+	profle, err := repo.FindByID(id)
+	if err != nil {
+		return nil, err
+	}
+
+	return profle, nil
+}
+
+// ini untuk get all data
+func getAll(repo repository.ProfileRepository) (model.Profiles, error) {
+	profiles, err := repo.FindAll()
+
+	if err != nil {
+		return nil, err
+	}
+
+	return profiles, nil
 }
