@@ -83,7 +83,7 @@ func (r *profileRepositoryPostgres) Delete(id string) error {
 	return nil
 }
 
-func (r *profileRepositoryPostgres) FindById(id string) (*model.Profile, error) {
+func (r *profileRepositoryPostgres) FindByID(id string) (*model.Profile, error) {
 	query := `
 		SELECT * FROM "profile" WHERE "id"=$1
 	`
@@ -115,13 +115,12 @@ func (r *profileRepositoryPostgres) FindAll() (model.Profiles, error) {
 		SELECT * FROM "profile"
 	`
 
+	var profiles model.Profiles
 	rows, err := r.db.Query(query)
 
 	if err != nil {
 		return nil, err
 	}
-
-	var profiles model.Profiles
 
 	defer rows.Close()
 
