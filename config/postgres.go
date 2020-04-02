@@ -8,7 +8,9 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func getPostgresDB() (*sql.DB, error) {
+// jika nama function diawali huruf besar (kapital), maka
+// function bersifat public
+func GetPostgresDB() (*sql.DB, error) {
 	host := os.Getenv("POSTGRES_HOST")
 	user := os.Getenv("POSTGRES_USER")
 	password := os.Getenv("POSTGRES_PASSWORD")
@@ -25,6 +27,8 @@ func getPostgresDB() (*sql.DB, error) {
 	return db, nil
 }
 
+// jika nama function diawali dengan lowercase, maka function
+// bersifat private
 func createConnection(desc string) (*sql.DB, error) {
 	db, err := sql.Open("postgres", desc)
 
