@@ -63,3 +63,84 @@ func (r *profileRepositoryPostgres) Update(id string, profile *model.Profile) er
 	return nil
 
 }
+
+func (r *profileRepositoryPostgres) Delete(id string) error {
+	query := `
+		DELETE FROM "profile" WHERE "id"=$1
+	`
+
+	statement, err := r.db.Prepare(query)
+	if err != nil {
+		return err
+	}
+
+	defer statement.Close()
+	_, err = statement.Exec(id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r *profileRepositoryPostgres) FindById(id string) (*model.Profile, error) {
+	query := `
+		SELECT * FROM "profile" WHERE "id"=$1
+	`
+
+	statement, err := r.db.Prepare(query)
+	if err != nil {
+		return nil, err
+	}
+
+	var profile model.Profile
+
+	defer statement.Close()
+
+	err = statement.QueryRow(id).Scan(
+		&profile.ID, &profile.FirstName, &profile.LastName,
+		&profile.Email, &profile.Password, &profile.CreatedAt,
+		&profile.UpdatedAt,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &profile, nil
+}
+
+func (r *profileRepositoryPostgres) FindAll() (model.Profiles, error) {
+	query := `
+		SELECT * FROM "profile"
+	`
+
+	rows, err := r.db.Query(query)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var profiles model.Profiles
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var profile model.Profile
+
+		err = rows.Scan(
+			&profile.ID, &profile.FirstName, &profile.LastName,
+			&profile.Email, &profile.Password, &profile.CreatedAt,
+			&profile.UpdatedAt,
+		)
+
+		if err != nil {
+			return nil, err
+		}
+
+		profiles = append(profiles, profile)
+	}
+
+	return profiles, nil
+
+}
