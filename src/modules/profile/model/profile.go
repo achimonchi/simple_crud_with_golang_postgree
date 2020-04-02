@@ -2,6 +2,7 @@ package model
 
 import "time"
 
+// membuat struct untuk profile
 type Profile struct {
 	ID        string
 	FirstName string
@@ -13,9 +14,10 @@ type Profile struct {
 }
 
 // profiles type profile
+// ini berguna untuk mendapatkan seluru data dari Profile
 type Profiles []Profile
 
-// NewProfile pada profiles constructor
+// NewProfile pada profile constructor
 func NewProfile() *Profile {
 	return &Profile{
 		CreatedAt: time.Now(),

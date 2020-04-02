@@ -15,6 +15,7 @@ func NewProfileRepositoryPostgres(db *sql.DB) *profileRepositoryPostgres {
 	return &profileRepositoryPostgres{db}
 }
 
+// melakukan implementasi kepada function save pada Repository
 func (r *profileRepositoryPostgres) Save(profile *model.Profile) error {
 	query := `
 		INSERT INTO "profile" 
@@ -38,6 +39,7 @@ func (r *profileRepositoryPostgres) Save(profile *model.Profile) error {
 	return nil
 }
 
+// melakukan implementasi kepada function Update pada Repository
 func (r *profileRepositoryPostgres) Update(id string, profile *model.Profile) error {
 	query := `
 		UPDATE "profile" 
@@ -64,6 +66,7 @@ func (r *profileRepositoryPostgres) Update(id string, profile *model.Profile) er
 
 }
 
+// melakukan implementasi kepada function Delete pada Repository
 func (r *profileRepositoryPostgres) Delete(id string) error {
 	query := `
 		DELETE FROM "profile" WHERE "id"=$1
@@ -83,6 +86,9 @@ func (r *profileRepositoryPostgres) Delete(id string) error {
 	return nil
 }
 
+// melakukan implementasi kepada function FindByID pada Repository
+// karena FindByID hanya mereturn 1 buah data, maka yang akan dia return
+// adalah model.Profile
 func (r *profileRepositoryPostgres) FindByID(id string) (*model.Profile, error) {
 	query := `
 		SELECT * FROM "profile" WHERE "id"=$1
@@ -110,6 +116,10 @@ func (r *profileRepositoryPostgres) FindByID(id string) (*model.Profile, error) 
 	return &profile, nil
 }
 
+// melakukan implementasi kepada function FindAll pada Repository
+// perlu diperhatikan apa yang di return.
+// karena method FindAll() akan mereturn seluruh data, maka
+// return nya adalah model.Profiles
 func (r *profileRepositoryPostgres) FindAll() (model.Profiles, error) {
 	query := `
 		SELECT * FROM "profile"
